@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class theme_uga_core_renderer extends theme_bootstrapbase_core_renderer {
+class theme_ugabase_core_renderer extends theme_bootstrapbase_core_renderer {
 
     
    
