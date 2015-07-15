@@ -107,28 +107,28 @@ class renderer extends theme_bootstrapbase_core_renderer {
      *
      * This renderer is needed to enable the Bootstrap style navigation.
      */
-    public function render_custom_menu(custom_menu $menu) {
+    public function render_custom_menu(\custom_menu $menu) {
         global $CFG;
         if (isloggedin() && !isguestuser() ) {
             $branchtitle = get_string('mycourses');
             $branchlabel = '<i class="fa fa-briefcase"></i> '.$branchtitle;
-            $branchurl   = new moodle_url('/my/index.php');
+            $branchurl   = new \moodle_url('/my/index.php');
             $branchsort  = -1;
 
             $branch = $menu->add($branchlabel, $branchurl, $branchtitle, $branchsort);
             if ($courses = enrol_get_my_courses(NULL, 'fullname ASC')) {
                 foreach ($courses as $course) {
                     if ($course->visible){
-                        $branch->add(format_string($course->fullname), new moodle_url('/course/view.php?id='.$course->id), format_string($course->shortname));
+                        $branch->add(format_string($course->fullname), new \moodle_url('/course/view.php?id='.$course->id), format_string($course->shortname));
                     }
                 }
             } 
             $branchtitle = get_string('showallcourses');
             $branchlabel = '<i class="fa fa-sitemap"></i> '.$branchtitle;
-            $branchurl   = new moodle_url('/course/index.php');
+            $branchurl   = new \moodle_url('/course/index.php');
             $branchsort  = -2;
             $menu->add($branchlabel, $branchurl, $branchtitle, $branchsort);
-
+        }
         // TODO: eliminate this duplicated logic, it belongs in core, not
         // here. See MDL-39565.
         $addlangmenu = true;
@@ -144,9 +144,9 @@ class renderer extends theme_bootstrapbase_core_renderer {
         }
 
         if ($addlangmenu) {
-            $language = $menu->add("<i class='fa fa-flag'></i> ".get_string('language'), new moodle_url('#'), get_string('language'), 10000);
+            $language = $menu->add("<i class='fa fa-flag'></i> ".get_string('language'), new \moodle_url('#'), get_string('language'), 10000);
             foreach ($langs as $langtype => $langname) {
-                $language->add($langname, new moodle_url($this->page->url, array('lang' => $langtype)), $langname);
+                $language->add($langname, new \moodle_url($this->page->url, array('lang' => $langtype)), $langname);
             }
         }
 
