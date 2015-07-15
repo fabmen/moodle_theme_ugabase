@@ -100,18 +100,20 @@ class renderer extends theme_bootstrapbase_core_renderer {
         $data = $page->export_for_template($this);
         return parent::render_from_template('theme_ugabase/wrapper_layout', $data);
     }
-    public function courses_menu() {
+    
+    
+/*
+     * This renders the bootstrap top menu.
+     *
+     * This renderer is needed to enable the Bootstrap style navigation.
+     */
+    public function render_custom_menu(custom_menu $menu) {
         global $CFG;
-        $coursesmenu = new custom_menu('', current_language());
-        return $this->render_courses_menu($coursesmenu);
-    }
-
-    protected function render_courses_menu(custom_menu $menu){
         if (isloggedin() && !isguestuser() ) {
             $branchtitle = get_string('mycourses');
             $branchlabel = '<i class="fa fa-briefcase"></i> '.$branchtitle;
             $branchurl   = new moodle_url('/my/index.php');
-            $branchsort  = 10000;
+            $branchsort  = -1;
 
             $branch = $menu->add($branchlabel, $branchurl, $branchtitle, $branchsort);
             if ($courses = enrol_get_my_courses(NULL, 'fullname ASC')) {
@@ -124,25 +126,8 @@ class renderer extends theme_bootstrapbase_core_renderer {
             $branchtitle = get_string('showallcourses');
             $branchlabel = '<i class="fa fa-sitemap"></i> '.$branchtitle;
             $branchurl   = new moodle_url('/course/index.php');
-            $branchsort  = 10000;
+            $branchsort  = -2;
             $menu->add($branchlabel, $branchurl, $branchtitle, $branchsort);
-
-        $content = '<ul class="nav navbar-nav">';
-        foreach ($menu->get_children() as $item) {
-            $content .= $this->render_custom_menu_item($item, 1);
-        }
-    
-        return $content.'</ul>';
-        }
-    }
-
-/*
-     * This renders the bootstrap top menu.
-     *
-     * This renderer is needed to enable the Bootstrap style navigation.
-     */
-    protected function render_custom_menu(custom_menu $menu) {
-        global $CFG;
 
         // TODO: eliminate this duplicated logic, it belongs in core, not
         // here. See MDL-39565.
